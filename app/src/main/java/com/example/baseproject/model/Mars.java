@@ -13,10 +13,8 @@ public class Mars implements Serializable {
     public String id;
     public String type;
     public String img_src;
-
     public Mars() {
     }
-
     public Mars(long price, String id, String type, String img_src) {
         this.price = price;
         this.id = id;
@@ -25,7 +23,7 @@ public class Mars implements Serializable {
     }
 
     public String getPrice() {
-        return price+"";
+        return price + "";
     }
 
     public void setPrice(long price) {
@@ -57,7 +55,7 @@ public class Mars implements Serializable {
     }
 
     @BindingAdapter("android:loadImage")
-    public void loadImage(ImageView imageView, String imageUrl){
+    public void loadImage(ImageView imageView, String imageUrl) {
         Glide.with(imageView)
                 .load(imageUrl)
                 .into(imageView);

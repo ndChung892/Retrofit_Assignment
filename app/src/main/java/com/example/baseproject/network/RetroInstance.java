@@ -18,7 +18,7 @@ public class RetroInstance {
                     .addConverterFactory(GsonConverterFactory.create()).build();
 
         }
-        Log.i(TAG, "getRetrofit: "+retrofit);
+        Log.i(TAG, "getRetrofit: " + retrofit);
         return retrofit;
     }
 }

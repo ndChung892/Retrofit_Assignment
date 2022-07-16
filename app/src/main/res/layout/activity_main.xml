@@ -10,32 +10,49 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="horizontal"
-        android:layout_gravity="center"
-        >
-        <Spinner
-            android:id="@+id/spnFilter"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp" />
+        android:weightSum="3">
 
         <Button
-            android:id="@+id/btnFilter"
-            android:text="Filter"
-            android:layout_marginLeft="20dp"
+            android:id="@+id/btnFilterAll"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
             android:backgroundTint="#656565"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+
+            android:text="Filter ALL" />
+
+        <Button
+            android:id="@+id/btnFilterRent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:backgroundTint="#656565"
+            android:text="Filter Rent" />
+
+        <Button
+            android:id="@+id/btnFilterBuy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:backgroundTint="#656565"
+            android:text="Filter Buy" />
+
 
     </LinearLayout>
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_margin="20dp"
         android:id="@+id/rcvMars"
-        tools:listitem="@layout/item_mars"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        tools:listitem="@layout/item_mars" />
 
 </LinearLayout>
 

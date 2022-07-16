@@ -19,7 +19,6 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_detail);
         ActivityDetailBinding detailBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
 
         Bundle bundle = getIntent().getExtras();
@@ -32,7 +31,6 @@ public class DetailActivity extends AppCompatActivity {
         detailBinding.setMars(mars);
         DetailViewModel detailViewModel = new ViewModelProvider(this).get(DetailViewModel.class);
         detailBinding.setLifecycleOwner(this);
-//        ImageView imgView = findViewById(R.id.imgViewDetail);
-//        TextView txtType = findViewById(R.id.textViewType);
+
     }
 }

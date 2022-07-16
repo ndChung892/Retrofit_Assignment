@@ -29,9 +29,11 @@ public class MarsAdapter extends RecyclerView.Adapter<MarsAdapter.ViewHowder> {
 
     public MarsAdapter(Context context, List<Mars> mListMars, ItemClickListener itemClickListener) {
         this.mListMars = mListMars;
-        this.context=context;
+        this.context = context;
         this.itemClickListener = itemClickListener;
+        notifyDataSetChanged();
     }
+
 
     @NonNull
     @Override
@@ -39,8 +41,7 @@ public class MarsAdapter extends RecyclerView.Adapter<MarsAdapter.ViewHowder> {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.item_mars, parent, false);
         return new ViewHowder(view);
-//        ItemMarsBinding mItemMarsBinding = ItemMarsBinding.inflate(inflater, parent, false);
-//        return new ViewHowder(mItemMarsBinding);
+
     }
 
     @Override
@@ -49,35 +50,24 @@ public class MarsAdapter extends RecyclerView.Adapter<MarsAdapter.ViewHowder> {
         if (mars == null) {
             return;
         }
-//        holder.mItemMarsBinding.setMars(mars);
-//        holder.mItemMarsBinding.executePendingBindings();
-//        holder.imgItem.setImageResource(mars.getImg_src());
-        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
+
+        holder.imgItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 itemClickListener.onClickMarsItem(mars);
             }
         });
-//        holder.mItemMarsBinding.itemRoot.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                itemClickListener.onClickMarsItem(mars);
-//            }
-//        });
-//        holder.bind(mMars);
-//        holder.imgItem.setImageResource(mars.getImg_src());
         Uri uri = Uri.parse(mars.getImg_src()).buildUpon().scheme("https").build();
         Glide.with(context)
                 .load(uri)
                 .centerCrop()
                 .into(holder.imgItem);
 
-
     }
 
     @Override
     public int getItemCount() {
-        Log.d(TAG, "getItemCount: MarsAdapter"+mListMars);
+        Log.d(TAG, "getItemCount: MarsAdapter" + mListMars);
         return this.mListMars.size();
 
     }
@@ -85,31 +75,12 @@ public class MarsAdapter extends RecyclerView.Adapter<MarsAdapter.ViewHowder> {
     public class ViewHowder extends RecyclerView.ViewHolder {
         ImageView imgItem;
         LinearLayout linearLayout;
+
         public ViewHowder(@NonNull View itemView) {
             super(itemView);
             imgItem = itemView.findViewById(R.id.imgViewItem);
-            linearLayout = itemView.findViewById(R.id.imgViewItem);
-
-
         }
     }
 
-
-//    public class ViewHowder extends RecyclerView.ViewHolder {
-//        //        private ImageView imgMars;
-//        ItemMarsBinding mItemMarsBinding;
-//
-//        public ViewHowder(@NonNull ItemMarsBinding mItemMarsBinding) {
-//            super(mItemMarsBinding.getRoot());
-//            this.mItemMarsBinding = mItemMarsBinding;
-//
-//
-////            imgMars = itemView.findViewById(R.id.imgViewItem);
-//        }
-//
-//        public void bind(Mars mars) {
-////            imgMars.setImageResource(mMars.getImg_src());
-//        }
-//    }
 
 }

@@ -1,9 +1,8 @@
 package com.example.baseproject.view;
 
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,8 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+
 import android.widget.Button;
-import android.widget.Spinner;
+
 
 import com.example.baseproject.adapter.MarsAdapter;
 import com.example.baseproject.ItemClickListener;
@@ -24,75 +25,71 @@ import com.example.baseproject.viewmodel.MarsViewModel;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    private static final String TAG = "MainActivity";
+    private RecyclerView rcvMars;
+    private Button btnFilterAll, btnFilterRent, btnFilterBuy;
+    private List<Mars> lMars;
+    private MainActivity mainActivity = (MainActivity) this;
+    private MarsViewModel mMarsViewModel;
+    MarsAdapter mMarsAdapter;
+    private String type = "";
 
-	private static final String TAG = "MainActivity";
-	private RecyclerView rcvMars;
-	private Button btnFilter;
-	private Spinner spnType;
-	private List<Mars> lMars;
-	private MainActivity mainActivity= (MainActivity) this;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ActivityMainBinding mBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
+        rcvMars = findViewById(R.id.rcvMars);
+        mBinding.btnFilterAll.findViewById(R.id.btnFilterAll).setOnClickListener(this);
+        mBinding.btnFilterBuy.findViewById(R.id.btnFilterBuy).setOnClickListener(this);
+        mBinding.btnFilterRent.findViewById(R.id.btnFilterRent).setOnClickListener(this);
+        setAdapter(type);
+    }
 
-	private MarsViewModel mMarsViewModel;
-	MarsAdapter mMarsAdapter;
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-//		setContentView(R.layout.activity_main);
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnFilterAll:
+                type = "";
+                break;
+            case R.id.btnFilterRent:
+                type = "rent";
+                break;
+            case R.id.btnFilterBuy:
+                type = "buy";
+                break;
+            default:
+                break;
+        }
+        setAdapter(type);
+    }
 
-		ActivityMainBinding mBinding = ActivityMainBinding.inflate(getLayoutInflater());
-		setContentView(mBinding.getRoot());
-		rcvMars = findViewById(R.id.rcvMars);
-		btnFilter = findViewById(R.id.btnFilter);
-		spnType = findViewById(R.id.spnFilter);
-
-		LinearLayoutManager layoutManager;
-		layoutManager=new GridLayoutManager(this, 2);
-		rcvMars.setLayoutManager(layoutManager);
-		mMarsViewModel = ViewModelProviders.of(this).get(MarsViewModel.class);
-		mMarsViewModel.getMarsListObserver().observe(this, new Observer<List<Mars>>() {
-			@Override
-			public void onChanged(List<Mars> mListMars) {
-				Log.d(TAG, "onChanged: "+mListMars);
-//				if(mListMars != null){
-//					mMarsAdapter.setMarsList(mListMars);
-//				}
-				mMarsAdapter = new MarsAdapter(mainActivity, mListMars, new ItemClickListener() {
-					@Override
-					public void onClickMarsItem(Mars mars) {
-						Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-						Bundle bundle = new Bundle();
-						bundle.putSerializable("MarsDetail", mars);
-						intent.putExtras(bundle);
-						startActivity(intent);
-					}
-				});
-				rcvMars.setAdapter(mMarsAdapter);
-			}
-		});
-
-		mMarsViewModel.initLiveData();
-
-//		mMarsViewModel = new ViewModelProvider(this).get(MarsViewModel.class);
-//		mMarsViewModel.getListMarsLiveData().observe(this, new Observer<List<Mars>>() {
-//			@Override
-//			public void onChanged(List<Mars> mListMars) {
-//				mMarsAdapter= new MarsAdapter(mListMars, new ItemClickListener() {
-//					@Override
-//					public void onClickMarsItem(Mars mars) {
-//						Log.i(TAG, "onClickMarsItem: "+mars);
-////						Toast.makeText(MainActivity.this, "hahahahahaahahah", Toast.LENGTH_SHORT).show();
-//						Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-//						Bundle bundle = new Bundle();
-//						bundle.putSerializable("MarsDetail", mars);
-//						intent.putExtras(bundle);
-//						startActivity(intent);
-//						rcvMars.setAdapter(mMarsAdapter);
-//					}
-//				});
-//
-//			}
-//		});
-
-	}
+    private void setAdapter(String type) {
+        LinearLayoutManager layoutManager;
+        layoutManager = new GridLayoutManager(this, 2);
+        rcvMars.setLayoutManager(layoutManager);
+        mMarsViewModel = ViewModelProviders.of(this).get(MarsViewModel.class);
+        mMarsViewModel.getMarsListObserver().observe(this, new Observer<List<Mars>>() {
+            @Override
+            public void onChanged(List<Mars> mListMars) {
+                Log.d(TAG, "onChanged: " + mListMars);
+                mMarsAdapter = new MarsAdapter(mainActivity, mListMars, new ItemClickListener() {
+                    @Override
+                    public void onClickMarsItem(Mars mars) {
+                        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("MarsDetail", mars);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }
+                });
+                rcvMars.setAdapter(mMarsAdapter);
+            }
+        });
+        mMarsViewModel.initLiveData(type);
+    }
 }
+
+
+
